@@ -359,19 +359,19 @@ before withdrawal fetch the latest amount available for withdraw.
 
 =========================================================================================
 New 
-# 5.  The `FundFlowController` assumes that the `unbondingPeriod` will not changed at linkStaking 
+# 5.  The `FundFlowController` presumes that the `unbondingPeriod` will not alter at linkStaking 
 
 ## Summary
-The `FundFlowController` constructor get the current `unbondingPeriod` value used in link chain `StakingPoolBase.sol` contract , but the issue here is that the unbonding Period can also be updated this will effect all the operation of `FundFlowController` more details in subsequent section.
+The `FundFlowController` constructor recieves the current `unbonding period` value used in the  chain link `Stakie.sol` contract, but the problem here is that the unbonding period can also be updated; this will affect all the operations of 'FundFlowController.` More details are given in the subsequent section.ngPoolBas
 
 ## Vulnerability Details
-When we look into the `FundFlowController` code the unbonding Period got set inside initialize and there is no setter function which will update unbonding period if it got changed at chain link staking contract.
+Upon reviewing the `FundFlowController` code, we found that the unbonding period is set within the initialization process. However, there is no setter function available to update the unbonding period if it changes in the chain link staking contract.
 
 ```solidity
 2024-09-stakelink/contracts/linkStaking/FundFlowController.sol:61
 61:         unbondingPeriod = _unbondingPeriod; // @audit : add setter function for unbouningPeroid
 ```
-Now lets have a look at the chain link staking pool base where they have a function which will update the unbonding period.
+Now, let's take a look at the chain link staking pool base, where they have implemented a function to update the unbonding period
 
 ```solidity
  function setUnbondingPeriod(uint256 newUnbondingPeriod)
@@ -383,7 +383,7 @@ Now lets have a look at the chain link staking pool base where they have a funct
   }
 
 ```
-Limit check to which the claim period can be updated
+A limit check is in place to control the extent to which the claim period can be updated.
 ```solidity
   function _setUnbondingPeriod(uint256 unbondingPeriod) internal {
     if (unbondingPeriod == 0 || unbondingPeriod > i_maxUnbondingPeriod) {
@@ -392,7 +392,7 @@ Limit check to which the claim period can be updated
 ```
 current claim Period : `728 days` , but it can be changed to any value between `>0 to 60 days.`
 
-Following functions if `FundFlowController` and `VaultDepositController` contract functions which will be effected :
+The following functions of `FundFlowController` and `VaultDepositController` contract functions will be affected:
 1. claimPeriodActive
 2. updateVaultGroups
 3. VaultControllerStrategy:withdraw
@@ -401,16 +401,15 @@ Following functions if `FundFlowController` and `VaultDepositController` contrac
 
 
 ## Impact
-1. As the unbounding Period can be increased/decreased, it will DoS the unbound operations.
-2. `claimPeriodActive` will return incorrect response.
-3. The `withdraw` function will be DoSed because the protocol assumes that it can withdraw funds but in fact it can not.
-
+1. Since the unbonding period can be increased or decreased, it may result in a denial of service (DoS) for unbonding operations.
+2. The `claimPeriodActive` function may return incorrect responses.
+3. The `withdraw` function could face a DoS issue, as the protocol might assume it can withdraw funds when, in reality, it cannot.
 ## Tools Used
 
 Manual Review
 
 ## Recommendations
-Rather than storing the `claimPeroid` inside `FundFlowController` contract. use `StakingPoolBase::getUnbondingParams` which will always return current `claimPeriod`.
+Instead of storing the `claimPeroid` within the `FundFlowController` contract, use the `StakingPoolBase::getUnbondingParams` function, which will always return the current `claimPeriod.
 
 ```solidity
   function getUnbondingParams() external view returns (uint256, uint256) {
@@ -421,20 +420,21 @@ Rather than storing the `claimPeroid` inside `FundFlowController` contract. use 
 
 
 ===================================================================================================================
-# 6.  The `FundFlowController` assumes that the `claimPeriod` will always remain same. 
+# 6. The `FundFlowController` assumes that the `claimPeriod` will remain constant.
 
 ## Summary
-The `FundFlowController` constructor get the current `claimPeriod` value used in link chain `StakingPoolBase.sol` contract , but the issue here is that the claim Period can also be updated this will effect all the operation of `FundFlowController` more details in subsequent section.
+The `FundFlowController` constructor retrieves the current `claimPeriod` value utilized in the linked `StakingPoolBase.sol` contract. However, it is important to note that the `claimPeriod` can be updated, which will impact all operations of the `FundFlowController`. Further details will be provided in the subsequent section.
+
 
 ## Vulnerability Details
-When we look into the `FundFlowController` code the claim Period got set inside initialize and there is no setter function which will update claim period if it got changed at chain link staking contract.
+Upon reviewing the `FundFlowController` code, it is observed that the `claimPeriod` is set within the `initialize` function, and there is no setter function available to update the `claimPeriod` if it changes in the Chainlink staking contract.
 
 ```solidity
 2024-09-stakelink/contracts/linkStaking/FundFlowController.sol:62
 62:         claimPeriod = _claimPeriod; // @audit : add setter function for claimPeroid 
 63:         numVaultGroups = _numVaultGroups; 
 ```
-Now lets have a look at the chain link staking pool base where they have a function which will update the claim period.
+Now, let us examine the Chainlink Staking Pool Base, which includes a function designed to update the `claimPeriod`.
 
 ```solidity
   function setClaimPeriod(uint256 claimPeriod)
@@ -453,27 +453,28 @@ Limit check to which the claim period can be updated
     }
 
 ```
-current claim Period : `7 days` , but it can be changed to any value between `1 day to 30 days.`
+The current `claimPeriod` is set to `7 days`, but it can be adjusted to any value ranging from `1 day to 30 days`.
 
-Following functions if `FundFlowController` and `VaultDepositController` contract functions which will be effected :
-1. claimPeriodActive
-2. updateVaultGroups
-3. VaultControllerStrategy:withdraw
-4. VaultControllerStrategy::getMinDeposits()
+The following functions in the `FundFlowController` and `VaultDepositController` contracts will be affected:
+1. `claimPeriodActive`
+2. `updateVaultGroups`
+3. `VaultControllerStrategy:withdraw`
+4. `VaultControllerStrategy::getMinDeposits()`
 
 
 
 ## Impact
-1. If the claim period is adjusted, the protocol incorrectly assumes it can unbind the funds from Chainlink staking, but in reality, it cannot.
-2. The `claimPeriodActive` function will return an incorrect response.
-3. The `withdraw` function is susceptible to a DoS attack as the protocol assumes it can withdraw funds when it cannot.
+
+1. If the `claimPeriod` is adjusted, the protocol erroneously assumes it can unbind the funds from Chainlink staking, while in reality, it cannot.
+2. The `claimPeriodActive` function will yield an incorrect response.
+3. The `withdraw` function is vulnerable to a Denial of Service (DoS) attack, as the protocol assumes it can withdraw funds when it actually cannot. 
 
 ## Tools Used
 
 Manual Review
 
 ## Recommendations
-Rather than storing the `claimPeroid` inside `FundFlowController` contract. use `StakingPoolBase::getUnbondingParams` which will always return current `claimPeriod`.
+Instead of storing the `claimPeriod` within the `FundFlowController` contract, it is recommended to utilize the `StakingPoolBase::getUnbondingParams`, which will consistently return the current `claimPeriod`.
 
 ```solidity
   function getUnbondingParams() external view returns (uint256, uint256) {
@@ -484,19 +485,21 @@ Rather than storing the `claimPeroid` inside `FundFlowController` contract. use 
 Or set a setter function for `claimPeriod` which will update the `claimPeriod`.
 
 
-# 7.  Some Contracts will not get initializer due to wrong `reinitializer` modifier or wrong version used
+# 7. Some contracts may not receive the initializer due to an incorrect `reinitializer` modifier or the use of an incorrect version.
 
 ## Summary
-Some contract are already deployed and there current version will be upgraded after deploymented of contract in this audit. however the issue here is that the newly deployed contract will not be initialize due to wrong modifer version used.
+Some contracts are already deployed, and their current version will be upgraded following the deployment of contracts in this audit. However, the issue arises because the newly deployed contract will not be initialized due to the incorrect modifier version used.
 
 ## Vulnerability Details
-The following contracts will not be upgrade or there initilize function will revert.
-1. OperatorVCS : This use wrong initialize version
-2. OperatorVault : This use wrong initialize version.
-3. CommunityVCS : This use initialize function
-4. CommunityVault : This use initialize function.
+The following contracts will not be upgraded, or their `initialize` function will revert:
 
-simple code to proof this issue:
+1. `OperatorVCS`: This contract uses an incorrect `initialize` version.
+2. `OperatorVault`: This contract uses an incorrect `initialize` version.
+3. `CommunityVCS`: This contract employs the `initialize` function.
+4. `CommunityVault`: This contract employs the `initialize` function.
+
+
+A simple code snippet to demonstrate this issue:
 Setup a simple foundry project and install openzeppelin contracts than add following code :
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -611,14 +614,14 @@ contract UUPSTest is Test {
 Run with command : `forge test --mt testUpgradeToV2WithReinitializer`.
 
 ## Impact
-These contract can not be deployed and will result in revert.
+These contracts can not be deployed and will result in a revert.
 
 ## Tools Used
 Manual review
 
 ## Recommendations
-check all the version of contract already deployed and use correct version for new deployment.
-like for `OperatorVCS` the current version is 3 we need to use 4 here.
+Check the versions of all already deployed contracts and ensure that the correct version is used for new deployments
+For example, for `OperatorVCS`, the current version is 3, and we need to use version 4 here.
 
 
 
