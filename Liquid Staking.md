@@ -1,10 +1,10 @@
 # First Deposit will receive less shares due to wrong calculation
 
 ## Summary
-when first user deposit into stakingPool and the user will receive 10**3 less share due to wrong calculation in `_mintShares` function.
+when first user deposit into stakingPool, the user will receive 10**3 less share due to wrong calculation in `_mintShares` function.
 
 ## Vulnerability Details
-To deposits in stakingPool the user will calls `deposit` function of `PriorityPool` . The `PriorityPool` will calls the `deposit` function of `stakingPool`. The stakingPool than mint the share and deposit the assets in startegy vault to stake the assets on chainlink staking contract. 
+To deposit in stakingPool the user will call `deposit` function of `PriorityPool` . The `PriorityPool` will call the `deposit` function of `stakingPool`. The stakingPool than mint the share and deposit the assets in startegy vault to stake the assets on chainlink staking contract. 
 
 However the issue here lies in `_mintShares` function where the user will receive the share which represent his stake in the vault. 
 
