@@ -355,3 +355,131 @@ The owner will not be able to withdraw the reward splitter due to wrong amount p
 Manual review
 ## Recommendations
 before withdrawal fetch the latest amount available for withdraw.
+
+
+=========================================================================================
+New 
+# 5.  The `FundFlowController` assumes that the `unbondingPeriod` will not changed at linkStaking 
+
+## Summary
+The `FundFlowController` constructor get the current `unbondingPeriod` value used in link chain `StakingPoolBase.sol` contract , but the issue here is that the unbonding Period can also be updated this will effect all the operation of `FundFlowController` more details in subsequent section.
+
+## Vulnerability Details
+When we look into the `FundFlowController` code the unbonding Period got set inside initialize and there is no setter function which will update unbonding period if it got changed at chain link staking contract.
+
+```solidity
+2024-09-stakelink/contracts/linkStaking/FundFlowController.sol:61
+61:         unbondingPeriod = _unbondingPeriod; // @audit : add setter function for unbouningPeroid
+```
+Now lets have a look at the chain link staking pool base where they have a function which will update the unbonding period.
+
+```solidity
+ function setUnbondingPeriod(uint256 newUnbondingPeriod)
+    external
+    onlyRole(DEFAULT_ADMIN_ROLE)
+    whenBeforeClosing
+  {
+    _setUnbondingPeriod(newUnbondingPeriod);
+  }
+
+```
+Limit check to which the claim period can be updated
+```solidity
+  function _setUnbondingPeriod(uint256 unbondingPeriod) internal {
+    if (unbondingPeriod == 0 || unbondingPeriod > i_maxUnbondingPeriod) {
+      revert InvalidUnbondingPeriod();
+    }
+```
+current claim Period : `728 days` , but it can be changed to any value between `>0 to 60 days.`
+
+Following functions if `FundFlowController` and `VaultDepositController` contract functions which will be effected :
+1. claimPeriodActive
+2. updateVaultGroups
+3. VaultControllerStrategy:withdraw
+4. VaultControllerStrategy::getMinDeposits()
+
+
+
+## Impact
+1. As the unbounding Period can be increased/decreased, it will DoS the unbound operations.
+2. `claimPeriodActive` will return incorrect response.
+3. The `withdraw` function will be DoSed because the protocol assumes that it can withdraw funds but in fact it can not.
+
+## Tools Used
+
+Manual Review
+
+## Recommendations
+Rather than storing the `claimPeroid` inside `FundFlowController` contract. use `StakingPoolBase::getUnbondingParams` which will always return current `claimPeriod`.
+
+```solidity
+  function getUnbondingParams() external view returns (uint256, uint256) {
+    return (s_pool.configs.unbondingPeriod, s_pool.configs.claimPeriod);
+  }
+
+```
+
+
+===================================================================================================================
+# 6.  The `FundFlowController` assumes that the `claimPeriod` will always remain same. 
+
+## Summary
+The `FundFlowController` constructor get the current `claimPeriod` value used in link chain `StakingPoolBase.sol` contract , but the issue here is that the claim Period can also be updated this will effect all the operation of `FundFlowController` more details in subsequent section.
+
+## Vulnerability Details
+When we look into the `FundFlowController` code the claim Period got set inside initialize and there is no setter function which will update claim period if it got changed at chain link staking contract.
+
+```solidity
+2024-09-stakelink/contracts/linkStaking/FundFlowController.sol:62
+62:         claimPeriod = _claimPeriod; // @audit : add setter function for claimPeroid 
+63:         numVaultGroups = _numVaultGroups; 
+```
+Now lets have a look at the chain link staking pool base where they have a function which will update the claim period.
+
+```solidity
+  function setClaimPeriod(uint256 claimPeriod)
+    external
+    onlyRole(DEFAULT_ADMIN_ROLE)
+    whenBeforeClosing
+  {
+    _setClaimPeriod(claimPeriod);
+  }
+```
+Limit check to which the claim period can be updated
+```solidity
+  function _setClaimPeriod(uint256 claimPeriod) private {
+    if (claimPeriod < i_minClaimPeriod || claimPeriod > i_maxClaimPeriod) {
+      revert InvalidClaimPeriod();
+    }
+
+```
+current claim Period : `7 days` , but it can be changed to any value between `1 day to 30 days.`
+
+Following functions if `FundFlowController` and `VaultDepositController` contract functions which will be effected :
+1. claimPeriodActive
+2. updateVaultGroups
+3. VaultControllerStrategy:withdraw
+4. VaultControllerStrategy::getMinDeposits()
+
+
+
+## Impact
+1. If the claim period is adjusted, the protocol incorrectly assumes it can unbind the funds from Chainlink staking, but in reality, it cannot.
+2. The `claimPeriodActive` function will return an incorrect response.
+3. The `withdraw` function is susceptible to a DoS attack as the protocol assumes it can withdraw funds when it cannot.
+
+## Tools Used
+
+Manual Review
+
+## Recommendations
+Rather than storing the `claimPeroid` inside `FundFlowController` contract. use `StakingPoolBase::getUnbondingParams` which will always return current `claimPeriod`.
+
+```solidity
+  function getUnbondingParams() external view returns (uint256, uint256) {
+    return (s_pool.configs.unbondingPeriod, s_pool.configs.claimPeriod);
+  }
+
+```
+Or set a setter function for `claimPeriod` which will update the `claimPeriod`.
+
