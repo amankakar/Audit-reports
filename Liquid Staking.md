@@ -23,7 +23,7 @@ function _mintShares(address _recipient, uint256 _amount) internal {
     }
 ```
 ## POC 
-Add following code inside new test file : `mintingBug.test.ts`
+Add the following code inside the new test file : `mintingBug.test.ts`
 ```javascript
 import { assert, expect } from 'chai'
 import {
@@ -111,11 +111,11 @@ describe('PriorityPool', () => {
     return { signers, accounts, adrs, token, stakingPool, strategy, sdlPool, pp, withdrawalPool }
   }
 
-  it('deposit should work correctly but shares are not correctly minted', async () => {
+  it('deposit works correctly but shares are not  minted correctly', async () => {
     const { signers, accounts, adrs, pp, token, strategy, stakingPool } = await loadFixture(
       deployFixture
     )
-    // if user deposit less then 100o it will revert , 
+    // if user deposit less then 100 it will revert , 
     await expect(pp.deposit(100, false, ['0x'])).to.be.reverted;
 
     await pp.deposit(1000, false, ['0x'])
@@ -131,7 +131,7 @@ Run with :
 Logs :
 ```javascript
 shares 0n
-    ✔ deposit should work correctly but shares are not correctly minted (2475ms)
+    ✔ deposit work correctly but shares are not minted correctly (2475ms)
 ```
 
 
@@ -193,11 +193,9 @@ index a58d308..28acb7b 100644
 # `LSTRewardsSplitterController:performUpkeep` will be reverted due to front running
 
 ## Summary
-The perform upkeep tries to distubute the rewards to all the fee receiver which return true from `checkUpKeep` call , but the `performUpKeep` can aslo be called directly on specfic splitter which will lead to reverts and the `performUpKeep` can not be succeded.
-
+The perform upkeep tries to distubute the rewards to all the fee receivers that return true from the `checkUpKeep` call, but the `performUpKeep` can also be called directly on the specific splitter, which will lead to reverts, and the `performUpKeep` cannot be succeeded.
 ## Vulnerability Details
-To Split the rewards first we need to confrim that the rewards can be split for this we calls `checkUpkeep`.
-
+To split the rewards, first we need to confirm that the rewards can be split; for this we call `checkUpkeep`.
 ```solidity
     function checkUpkeep(bytes calldata) external view returns (bool, bytes memory) {
         bool[] memory splittersToCall = new bool[](accounts.length);
@@ -212,9 +210,9 @@ To Split the rewards first we need to confrim that the rewards can be split for 
         return (overallUpkeepNeeded, abi.encode(splittersToCall));
     }
 ```
-if it return true then we will call the `performUpKeep` function which will call `LSTRewardsSplitter:performUpKeep` and split the rewards in fee receiver.
+if it returns true then we will call the `performUpKeep` function, which will call `LSTRewardsSplitter:performUpKeep` and split the rewards in fee receiver.
 
-The PerformUpkeep function of `LSTRewardsSplitter` check that the total lst balance and pricnipal depost is more than rewards threshold than it call `_splitRewards` function which distrbute the fee to the fee receiver and update the `principalDeposits=lst.balanceOf(address(this))`.
+The PerformUpkeep function of `LSTRewardsSplitter` checks that the total lst balance and pricnipal deposit is more than the rewards threshold, then calls the `_splitRewards` function, which distributes the fee to the fee receiver and updates the `principalDeposits=lst.balanceOf(address(this))`.
 ```solidity
 function performUpkeep(bytes calldata) external {
         int256 newRewards = int256(lst.balanceOf(address(this))) - int256(principalDeposits);
@@ -228,10 +226,10 @@ function performUpkeep(bytes calldata) external {
     }
 ```
 POC:
-1. keeper calls the `checkupKeep` and receive true for overall split and with the 4 splitter.
-2. keeper submit the transaction for `performUpKeep` for these 4 splitter.
-3. Bob moniter the transaction and frontrun Keeper transaction and `performUpkeep` on on2 of the splitter.
-4. When execution node pick Keeper transaction it will be reverted with this message `InsufficientRewards`.      
+1. The keeper calls the `checkupKeep` and receives true for the overall split and with the 4 splitter.
+2. Keeper submits the transaction for `performUpKeep` for these 4 splitters.
+3. Bob monitors the transaction and frontruns the Keeper transaction and `performUpkeep` on one of the splitters.
+4. When the execution node picks the Keeper transaction, it will be reverted with this message: `InsufficientRewards`.      
 
 ## Impact
 The keeper transaction will be frontrun by malicious users and will result in DoS for keeper.
@@ -240,21 +238,21 @@ The keeper transaction will be frontrun by malicious users and will result in Do
 Manual Review
 
 ## Recommendations
-remove the revert condition and simply return it no rewards to split.
+Remove the revert condition and simply return it, no rewards to split.
 
-# The user cannot withdraw assets if the remaining amount after partial filling the queue deposit is below the minimum in the `queueWithdrawal` function.
+# The user cannot withdraw assets if the remaining amount, after partial filling the queue deposit, is below the minimum in the `queueWithdrawal` function.
 
 
 ## Summary
 
-For efficient asset flow, the protocol allows immediate withdrawals and deposits in Stakelink staking. This is achieved by transferring pending deposits to users withdrawing assets from Stakelink, and vice versa.
+The protocol allows immediate withdrawals and deposits in Stakelink staking, for efficient asset flow. This is achieved by transferring pending deposits to users withdrawing assets from Stakelink, and vice versa.
 
 However, the issue arises when queuing a withdrawal. First, if the deposit queue is non-zero, the withdrawal amount is filled with the queue deposit. If some amount remains, the `queueWithdrawal` function is called. This function enforces a `minWithdrawalAmount` check, which prevents users from withdrawing their assets if the remaining amount is below the minimum threshold.
 
 
 ## Vulnerability Details
 
-To withdraw assets from pool user will call `PriorityPool:withdraw` function. which will call internal `_withdraw` function 
+To withdraw assets from pool, user will call `PriorityPool:withdraw` function. which will call internal `_withdraw` function 
 ```solidity
 2024-09-stakelink/contracts/core/priorityPool/PriorityPool.sol:663
 663:     function _withdraw(
@@ -303,12 +301,12 @@ Add a check inside the `_withdraw` function to ensure that the amount queued for
 # The `removeSplitter` function still transfer the same amount before reward transfer
 
 ## Summary
-To remove splitter from controler we first check that if the balance of splliter is not zero and also balance is not equal to `principalDeposits` than we calls `splitRewards` function to distribute the rewards among the fee receivers , however the issue is here that we still tries to `withdraw` the exact same balance amount to splitter owner address. 
+To remove splitter from controller, we first check that if the balance of splitter is not zero and also balance is not equal to 'principalDeposits', then we call `the'splitRewards` function to distribute the rewards among the fee receivers. However, the issue here is that we still have to `withdraw` the exact same balance amount to the splitter owner's address. 
 
 ## Vulnerability Details
 
-Let we have splitter contract with the balance of 100 LST and the total deposit is 90 , the 10 LST is for rewards distribution. 
-so here the  `balance = 100 LST` and `principalDeposits = 90 LST`. So both of them are not equal we need to distribute the rewards.
+Let us have a splitter contract with the balance of 100 LST and the total deposit of 90; the 10 LST is for rewards distribution. 
+So here the `balance = 100 LST` and `principalDeposits = 90 LST` are not equal, we need to distribute the rewards.
 
 ```solidity
 2024-09-stakelink/contracts/core/lstRewardsSplitter/LSTRewardsSplitterController.sol:134
@@ -320,9 +318,8 @@ so here the  `balance = 100 LST` and `principalDeposits = 90 LST`. So both of th
 139:         }
 140: 
 ``` 
-Here at Line `138` we still tries to withdraw 100 LST in fact we did not have 100 LST available in balance.
-there for it will revert and did not allow the owner to remove the splitter
-
+Here at Line `138` we still try to withdraw 100 LST; in fact, we do not have 100 LST available in balance.
+Therefor it will revert and not allow the owner to remove the splitter.
 
 POC : add the following test case inside `test/core/lst-rewards-splitter.test.ts` :
 ```javascript
@@ -357,4 +354,4 @@ The owner will not be able to withdraw the reward splitter due to wrong amount p
 ## Tools Used
 Manual review
 ## Recommendations
-before withdraw fetch the latest amount available for withdraw.
+before withdrawal fetch the latest amount available for withdraw.
