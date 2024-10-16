@@ -298,3 +298,63 @@ Manual Review
 
 ## Recommendations
 Add a check inside the `_withdraw` function to ensure that the amount queued for withdrawal is not less than the required minimum if the amount is partially filled from queued deposits.
+
+===================================================================================================================
+# The `removeSplitter` function still transfer the same amount before reward transfer
+
+## Summary
+To remove splitter from controler we first check that if the balance of splliter is not zero and also balance is not equal to `principalDeposits` than we calls `splitRewards` function to distribute the rewards among the fee receivers , however the issue is here that we still tries to `withdraw` the exact same balance amount to splitter owner address. 
+
+## Vulnerability Details
+
+Let we have splitter contract with the balance of 100 LST and the total deposit is 90 , the 10 LST is for rewards distribution. 
+so here the  `balance = 100 LST` and `principalDeposits = 90 LST`. So both of them are not equal we need to distribute the rewards.
+
+```solidity
+2024-09-stakelink/contracts/core/lstRewardsSplitter/LSTRewardsSplitterController.sol:134
+134:         uint256 balance = IERC20(lst).balanceOf(address(splitter));
+135:         uint256 principalDeposits = splitter.principalDeposits();
+136:         if (balance != 0) {
+137:             if (balance != principalDeposits) splitter.splitRewards();
+138:             splitter.withdraw(balance, _account); // @audit : the balance will revert as we will distribute the rewards and the balance will not be same as already cached??
+139:         }
+140: 
+``` 
+Here at Line `138` we still tries to withdraw 100 LST in fact we did not have 100 LST available in balance.
+there for it will revert and did not allow the owner to remove the splitter
+
+
+POC : add the following test case inside `test/core/lst-rewards-splitter.test.ts` :
+```javascript
+
+  it.only('should be able to remove splitter', async () => {
+    const { accounts, controller, token, splitter1 , splitter0} = await loadFixture(deployFixture)
+    await token.transfer(splitter0 , toEther(100));
+    await controller.removeSplitter(accounts[0])
+
+    await expect(controller.removeSplitter(accounts[0])).to.be.revertedWithCustomError(
+      controller,
+      'SplitterNotFound()'
+    )
+
+    assert.deepEqual(await controller.getAccounts(), [accounts[1]])
+
+    assert.equal(await controller.splitters(accounts[0]), ethers.ZeroAddress)
+
+    assert.equal(await splitter1.controller(), controller.target)
+    assert.equal(await splitter1.lst(), token.target)
+    assert.deepEqual(await splitter1.getFees(), [
+      [accounts[7], 2000n],
+      [accounts[8], 4000n],
+    ])
+  })
+```
+and run with command : `npx hardhat test test/core/lst-rewards-splitter.test.ts `.
+
+## Impact
+The owner will not be able to withdraw the reward splitter due to wrong amount provided in withdraw functions.
+
+## Tools Used
+Manual review
+## Recommendations
+before withdraw fetch the latest amount available for withdraw.
