@@ -483,3 +483,143 @@ Rather than storing the `claimPeroid` inside `FundFlowController` contract. use 
 ```
 Or set a setter function for `claimPeriod` which will update the `claimPeriod`.
 
+
+# 7.  Some Contracts will not get initializer due to wrong `reinitializer` modifier or wrong version used
+
+## Summary
+Some contract are already deployed and there current version will be upgraded after deploymented of contract in this audit. however the issue here is that the newly deployed contract will not be initialize due to wrong modifer version used.
+
+## Vulnerability Details
+The following contracts will not be upgrade or there initilize function will revert.
+1. OperatorVCS : This use wrong initialize version
+2. OperatorVault : This use wrong initialize version.
+3. CommunityVCS : This use initialize function
+4. CommunityVault : This use initialize function.
+
+simple code to proof this issue:
+Setup a simple foundry project and install openzeppelin contracts than add following code :
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+
+
+
+contract MyContractV1 is Initializable, UUPSUpgradeable {
+    uint256 public value;
+
+    // Initialize function for UUPS
+    function initialize() public initializer {
+        value = 42; // Set an initial value
+    }
+
+    // Upgrade authorization (required for UUPS proxy)
+    function _authorizeUpgrade(address newImplementation) internal override {}
+
+    function setValue(uint256 newValue) public {
+        value = newValue;
+    }
+}
+
+
+contract MyContractV2 is Initializable, UUPSUpgradeable {
+    uint256 public value;
+    uint256 public newValue;
+
+    // Added function in V2
+    function increment() public {
+        value += 1;
+    }
+
+    // New reinitializer for V2
+    function reinitializeV2() public reinitializer(1) {
+        newValue = 100; // Some new logic for V2
+    }
+
+    function _authorizeUpgrade(address newImplementation) internal override  {}
+}
+``` 
+Add following test code inside test dir :
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "forge-std/Test.sol";
+import {MyContractV1 , MyContractV2}  from "../src/MyContract.sol";
+import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+
+contract UUPSTest is Test {
+    MyContractV1 public myContractV1;
+    MyContractV2 public myContractV2;
+    ERC1967Proxy public proxy;
+    MyContractV1 public proxyAsV1;
+    MyContractV2 public proxyAsV2;
+
+    event UpdateStrategyRewards(
+     int rewardsAmount
+    );
+
+    function setUp() public {
+        // Deploy the V1 contract and initialize
+        myContractV1 = new MyContractV1();
+        bytes memory data = abi.encodeWithSignature("initialize()");
+        
+        // Deploy proxy pointing to V1
+        proxy = new ERC1967Proxy(address(myContractV1), data);
+
+        // Cast the proxy as MyContractV1
+        proxyAsV1 = MyContractV1(address(proxy));
+
+        // Ensure the initial state is correct
+        assertEq(proxyAsV1.value(), 42);
+    }
+
+    function testUpgradeToV2WithReinitializer() public {
+        // Deploy V2 contract
+        myContractV2 = new MyContractV2();
+
+        vm.prank(address(this)); // Assuming msg.sender is needed for authorization
+        proxyAsV1.upgradeTo(address(myContractV2));
+
+        // Cast the proxy as MyContractV2
+        proxyAsV2 = MyContractV2(address(proxy));
+
+        // Ensure that the state is retained after the upgrade
+        assertEq(proxyAsV2.value(), 42);
+
+        // Call the reinitializer (simulating post-upgrade initialization)
+        proxyAsV2.reinitializeV2();
+
+        // Ensure that the reinitializer logic worked
+        assertEq(proxyAsV2.newValue(), 100);
+
+        // Test new functionality in V2
+        proxyAsV2.increment();
+        assertEq(proxyAsV2.value(), 43);
+    }
+
+    function testEvent() external {
+        int256 a = -1234;
+        emit  UpdateStrategyRewards(a);
+    }
+}
+
+```
+Run with command : `forge test --mt testUpgradeToV2WithReinitializer`.
+
+## Impact
+These contract can not be deployed and will result in revert.
+
+## Tools Used
+Manual review
+
+## Recommendations
+check all the version of contract already deployed and use correct version for new deployment.
+like for `OperatorVCS` the current version is 3 we need to use 4 here.
+
+
+
+
