@@ -7,7 +7,7 @@ I’m Aman Ullah, a smart contract security researcher. I review EVM-based proto
 Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](https://x.com/AmanKakar12)
 
 
-### Contest Wins
+### Contest Reports
 
 | Protocol | About | Platform | Link |
 |------------------|-------|----------|------|
