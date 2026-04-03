@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="200" viewBox="0 0 880 200" role="img" aria-label="Portfolio banner">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f1419"/>
+      <stop offset="100%" style="stop-color:#1a2332"/>
+    </linearGradient>
+  </defs>
+  <rect width="880" height="200" fill="url(#bg)" rx="12"/>
+  <text x="440" y="95" text-anchor="middle" fill="#e6edf3" font-family="system-ui,sans-serif" font-size="28" font-weight="600">Security audit portfolio</text>
+  <text x="440" y="130" text-anchor="middle" fill="#8b949e" font-family="system-ui,sans-serif" font-size="14">Replace with your logo: save as assets/banner.png and update README.md</text>
+</svg>
