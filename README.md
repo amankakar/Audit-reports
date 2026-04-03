@@ -18,5 +18,8 @@ Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](
 |Burve|Burve is a 16-token multi-swap for pegged assets launching on Berachain with rehypothecation yields, moving peg handling, an analytic stableswap solution, depeg-protection, and subset-LPing so users can limit themselves to tokens they feel safest in.|Sherlock|[![Open Report](assets/icon-page.svg)](reports/Burve.md)|
 |Notional Leveraged Vaults|This update creates a Leveraged Vault integration with Pendle where Notional users can take leverage to buy PT tokens. It also includes an update to existing vaults that allows incentives to be more flexibly managed.|Sherlock|[![Open Report](assets/icon-page.svg)](reports/Notional-Pendle-Integration.md)|
 |Elfi|All assets are tradable. Ultra Portfolio Mode includes multi-assets margin, position & assets risk offset.|Sherlock|[![Open Report](assets/icon-page.svg)](reports/Elfi-Protocol.md)|
+|Tokensoft Distributor Contracts Update|Adding "Per Address" functionality to existing distribution contracts on Tokensoft's platform.|Sherlock|[![Open Report](assets/icon-page.svg)](reports/TokenSoft-Dist.md)|
+
+
 
 

@@ -9,12 +9,12 @@ All assets are tradable. Ultra Portfolio Mode includes multi-assets margin, posi
 
 ---
 
-# [H-01] User will loss the Rewards for stacking  if he redeem without claiming the reward
+### [H-01] User will loss the Rewards for stacking  if he redeem without claiming the reward
 
-## Summary
+#### Summary
 Rewards for staked tokens accumulate over time based on the duration of the staking period. However, Due to an Issue in code The Rewards can not be claimed more details in next section.
 
-## Vulnerability Detail
+#### Vulnerability Detail
 The Protocol Provide Rewards token as incentive for users to stake at thre platform. To stake token user will call `createMintStakeTokenRequest` and `ROLE_KEEPER` will call `executeMintStakeToken` Here we also update the rewards for staking via `updateAccountFeeRewards`. 
 ```solidity
 function updateAccountFeeRewards(address account, address stakeToken) public {
@@ -95,16 +95,16 @@ In above code when `realisedRewardsTokenAmount==0` we can not Process it.
 4. we first redeem Bob token so `stake=0`.
 5. The `realisedRewardsTokenAmount` will not be updated and remain `0`.
 
-## Impact
+#### Impact
 The User will loos the rewards token for staking.
 
-## Code Snippet
+#### Code Snippet
 [https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/process/RedeemProcess.sol#L78](https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/process/RedeemProcess.sol#L78)
-## Tool used
+#### Tool used
 
 Manual Review
 
-## Recommendation
+#### Recommendation
 First `updateAccountFeeRewards` then redeem tokens.
 ```diff
 diff --git a/elfi-perp-contracts/contracts/process/RedeemProcess.sol b/elfi-perp-contracts/contracts/process/RedeemProcess.sol
@@ -130,13 +130,13 @@ index dedfe16e..8c293d07 100644
 ---
 
 
-# [M-01] The USer will receive less amount  than user expected
+### [M-01] The USer will receive less amount  than user expected
 
-## Summary
+#### Summary
 While redeeming the stack tokens, The user provides the `minRedeemAmount` to ensure they receive at least that amount. However,  within `executeRedeemStakeToken` function, the  `minRedeemAmount` check is used before deducting the fee . which could result in  the user  receive less amount than the expected amount.
 
 
-## Vulnerability Detail
+#### Vulnerability Detail
 The Protocol allows user to specify the `minRedeemAmount` to insure that the user will receive this amount or in other case the transaction will revert. The User will first submit a request for Redemption where he also specify this `minRedeemAmount` which user expect to receive. The Issue is in the execute redemption request flow.
 ```solidity
 function _executeRedeemStakeToken(
@@ -192,18 +192,18 @@ Following case would occur due to this:
 
 This applies on both functions `_executeRedeemStakeUsd` and `_executeRedeemStakeToken`.
 
-## Impact
+#### Impact
 The user will receive less amount than expected.
 
 
-## Code Snippet
+#### Code Snippet
 [https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/process/RedeemProcess.sol#L157](https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/process/RedeemProcess.sol#L157)
 
-## Tool used
+#### Tool used
 
 Manual Review
 
-## Recommendation
+#### Recommendation
 Use slippage check after deducting the Fee.
 ```diff
 diff --git a/elfi-perp-contracts/contracts/process/RedeemProcess.sol b/elfi-perp-contracts/contracts/process/RedeemProcess.sol
@@ -235,12 +235,12 @@ index dedfe16e..eb6c84fe 100644
 ---
 
 
-# [M-02] Loss Fee does not get added due to wrong calculation
+### [M-02] Loss Fee does not get added due to wrong calculation
 
-## Summary
+#### Summary
 When the `ROLE_KEEPER` executes a transaction, we check if the execution_fee is sufficient to cover the transaction cost. If any amount remains, it is refunded to the user, and if the fee is insufficient, the excess amount is added to the loss amount. However, in the event of a loss, the loss amount is not correctly calculated and therefore not added due to an error in the calculation
 
-## Vulnerability Detail
+#### Vulnerability Detail
 Whenever user submit a request for any operation we charge `executionFee` in advance . The `ROLE_KEPPER` will submit the request operation and will charge the `exectuion_fee`. Here one pf the following 2 cases can occur.
 1. The execution Fee was sufficient and the remaining amount sent back to users.
 2. The executionFee was insufficient and loss added to Protocol.
@@ -285,16 +285,16 @@ lossFee = executionFee - cache.userExecutionFee;// 9 gwei - 9 gwei =0
         }
 ```
 
-## Impact
+#### Impact
 `processExecutionFee` will never added any loss occur.
 
-## Code Snippet
+#### Code Snippet
 [https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/process/GasProcess.sol#L22-L25](https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/process/GasProcess.sol#L22-L25)
-## Tool used
+#### Tool used
 
 Manual Review
 
-## Recommendation
+#### Recommendation
 ```diff
 diff --git a/elfi-perp-contracts/contracts/process/GasProcess.sol b/elfi-perp-contracts/contracts/process/GasProcess.sol
 index 9a112074..b0552f34 100644
@@ -313,12 +313,12 @@ index 9a112074..b0552f34 100644
 
 ---
 
-# [M-03] `isHoldAmountAllowed` and `isSubAmountAllowed` wrong subtraction will result in DoS
+### [M-03] `isHoldAmountAllowed` and `isSubAmountAllowed` wrong subtraction will result in DoS
 
-## Summary
+#### Summary
 The `HoldStableToken` function checks if the given amount can be held by adding `(balance.amount + balance.unsettledAmount-balance.holdAmount)` and `isSubAmountAllowed` checks if `(balance.amount - balance.holdAmount) >= amount`. However, it is possible that the `holdAmount` is greater than the amount.
 
-## Vulnerability Detail
+#### Vulnerability Detail
 In case of adding the `HoldStableToken` we add  `balance.amount` and `balance.unsettledAmount` in `isHoldAmountAllowed`:
 ```solidity
 function isHoldAmountAllowed(
@@ -363,18 +363,18 @@ balance.unsettled = 10e18;
 10e18 - 12e18>= 5e18 // it will revert due to underFlow/OverFlow
 ```
 
-## Impact
+#### Impact
 The Will create DoS for `subStableToken` calls , `subStableToken` function is used in different use cases like redeeming token , PnL updates and Rebalance calls. 
 
-## Code Snippet
+#### Code Snippet
 [https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/storage/UsdPool.sol#L241C14-L252](https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/storage/UsdPool.sol#L241C14-L252)
 [https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/storage/UsdPool.sol#L254-L266](https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/storage/UsdPool.sol#L254-L266)
 [https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/storage/UsdPool.sol#L87](https://github.com/sherlock-audit/2024-05-elfi-protocol/blob/main/elfi-perp-contracts/contracts/storage/UsdPool.sol#L87)
-## Tool used
+#### Tool used
 
 Manual Review
 
-## Recommendation
+#### Recommendation
 add one more check inside `isSubAmountAllowed` as follows :
 ```diff
 diff --git a/elfi-perp-contracts/contracts/storage/UsdPool.sol b/elfi-perp-contracts/contracts/storage/UsdPool.sol
