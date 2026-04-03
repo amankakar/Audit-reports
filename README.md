@@ -15,5 +15,6 @@ Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](
 |USG - Tangent|USG is a debt collateralized stablecoin backed by productive LPs and yield-bearing assets from blue chip DeFi protocols.|Sherlock|[![Open Report](assets/icon-page.svg)](reports/USG-Tangent.md)|
 |Notional Exponent|Notional Exponent is a leveraged yield protocol. Notional Exponent enables users to borrow from Morpho to establish leveraged staking, leveraged PT, and leveraged liquidity strategies.|Sherlock|[![Open Report](assets/icon-page.svg)](reports/Notional-Exponent.md)|
 |LEND|LEND is a cross chain lending protocol with real yield value extraction, from protocol, to holder. The audit will focus on the cross-chain functionalities within the LEND infrastructure.|Sherlock|[![Open Report](assets/icon-page.svg)](reports/Lend.md)|
+|Burve|Burve is a 16-token multi-swap for pegged assets launching on Berachain with rehypothecation yields, moving peg handling, an analytic stableswap solution, depeg-protection, and subset-LPing so users can limit themselves to tokens they feel safest in.|Sherlock|[![Open Report](assets/icon-page.svg)](reports/Burve.md)|
 
 
