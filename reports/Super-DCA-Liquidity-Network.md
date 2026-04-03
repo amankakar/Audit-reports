@@ -5,13 +5,9 @@
 This contest reviews the contracts that make up the Super DCA Liquidity Network, powered by Uniswap V4 Hooks. It focuses on the security and economic soundness of the contract suite coordinating dynamic fees, emitting DCA tokens using a Curve-style gauge, and locking liquidity when new tokens are listed.
 
 
-
-
 [Ethereum][Solidity][DeFi][Uniswap V4 Hook]
 
-
-
-
+---
 
 ### [H-01] The rewards Will be Lost if an attacker front run the accrueReward transaction with stake/unStake 
 

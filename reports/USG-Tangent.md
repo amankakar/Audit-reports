@@ -5,12 +5,9 @@
 USG is a debt collateralized stablecoin backed by productive LPs and yield-bearing assets from blue chip DeFi protocols.
 The focus of the audit is our lending mechanism, dynamic interest rate model, LP oracle, integrations with Curve, Convex, and Pendle, as well as reward streaming and zapping functionalities.
 
-
-
-
-
 [Ethereum][Solidity][DeFi][Lending]
 
+---
 
 ### [M-01] User will not be able to migrate Debt if deposit is paused
 
