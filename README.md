@@ -4,7 +4,7 @@
 
 I’m Aman Ullah, a smart contract security researcher. I review EVM-based protocols for teams and in public security competitions, with attention to correctness, economic assumptions, and integration risk. This repo collects selected findings clients or programs have approved for public release.
 
-Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg) @AmanKakar12](https://x.com/AmanKakar12)
+Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](https://x.com/AmanKakar12)
 
 
 ### Contest Wins
