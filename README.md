@@ -1,4 +1,4 @@
-![image](assets/portfolio-banner.svg)
+![Smart contract audit portfolio banner](assets/portfolio-banner.svg)
 
 #
 

@@ -1,11 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="880" height="200" viewBox="0 0 880 200" role="img" aria-label="Portfolio banner">
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="200" viewBox="0 0 880 200" role="img" aria-label="Smart contract audit portfolio banner">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#0f1419"/>
       <stop offset="100%" style="stop-color:#1a2332"/>
     </linearGradient>
+    <linearGradient id="logoRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#388bfd"/>
+      <stop offset="100%" style="stop-color:#58a6ff"/>
+    </linearGradient>
   </defs>
   <rect width="880" height="200" fill="url(#bg)" rx="12"/>
-  <text x="440" y="95" text-anchor="middle" fill="#e6edf3" font-family="system-ui,sans-serif" font-size="28" font-weight="600">Security audit portfolio</text>
-  <text x="440" y="130" text-anchor="middle" fill="#8b949e" font-family="system-ui,sans-serif" font-size="14">Replace with your logo: save as assets/banner.png and update README.md</text>
+  <!-- Logo mark: replace with <image href="logo.png" ... /> if you add a raster/vector file -->
+  <g id="logo" transform="translate(48, 52)">
+    <rect width="96" height="96" rx="22" fill="#161b22" stroke="url(#logoRing)" stroke-width="2"/>
+    <text x="48" y="50" text-anchor="middle" dominant-baseline="middle" fill="#e6edf3" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="34" font-weight="700">AU</text>
+  </g>
+  <text x="180" y="88" fill="#e6edf3" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="30" font-weight="600">Smart contract audit portfolio</text>
+  <text x="180" y="124" fill="#8b949e" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="15">Aman Ullah · EVM security research &amp; public reports</text>
 </svg>
