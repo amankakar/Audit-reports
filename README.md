@@ -7,7 +7,7 @@ I’m Aman Ullah, a smart contract security researcher. I review EVM-based proto
 Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](https://x.com/AmanKakar12)
 
 
-### Contest Reports
+### Contest Reports Solo
 
 | Protocol | About | Platform | Link |
 |------------------|-------|----------|------|
@@ -23,3 +23,11 @@ Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](
 
 
 
+
+
+### Contest Reports Team
+
+| Protocol | About | Platform | Link |
+|------------------|-------|----------|------|
+| Liquidity Management | The Perpetual Vault Protocol is a DeFi leveraged-trading system on GMX that streamlines position management with automation and risk mitigation.| Codehawks  | [![Open report](assets/icon-page.svg)](team-reports/Liquidity-Management.md) |
+| Zaros Part2 | Zaros is a perpetuals DEX on Arbitrum (with Monad planned) that uses boosted (re)staking vaults to grow LP yield while aiming for a strong trading experience.| Codehawks  | [![Open report](assets/icon-page.svg)](team-reports/Zaros-part2.md) |
