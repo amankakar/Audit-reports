@@ -932,7 +932,7 @@ Track stake timestamps and distribute fees based on stake duration.
 
 ---
 
-### [M-03] M-02. Fee Recipient Shares Cannot Be Decreased When Total Fee recipients’s share is at Max Limit
+### [M-03]  Fee Recipient Shares Cannot Be Decreased When Total Fee recipients’s share is at Max Limit
 
 #### Summary
 When the total fee recipient shares reach the maximum limit, reducing a recipient’s share is blocked due to a validation check. This prevents owners from updating feeBps for existing recipients.
@@ -1166,7 +1166,7 @@ Add a Setter function where the owner can set these variables:
 
 ---
 
-### [M-06] formula Deviation from White Paper and Weighted Pool `performUpdate` unintended revert
+### [M-05] formula Deviation from White Paper and Weighted Pool `performUpdate` unintended revert
 
 
 #### Summary
@@ -1427,7 +1427,7 @@ It is recommended to remove the check require(res >= 0, "Invalid weight"); from 
 
 ---
 
-### [M-05] The uplift Fee can apply if price increase by up to 99%
+### [M-06] The uplift Fee can apply if price increase by up to 99%
 
 
 
