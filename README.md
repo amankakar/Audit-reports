@@ -31,3 +31,4 @@ Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](
 |------------------|-------|----------|------|
 | Liquidity Management | The Perpetual Vault Protocol is a DeFi leveraged-trading system on GMX that streamlines position management with automation and risk mitigation.| Codehawks  | [![Open report](assets/icon-page.svg)](team-reports/Liquidity-Management.md) |
 | Zaros Part2 | Zaros is a perpetuals DEX on Arbitrum (with Monad planned) that uses boosted (re)staking vaults to grow LP yield while aiming for a strong trading experience.| Codehawks  | [![Open report](assets/icon-page.svg)](team-reports/Zaros-part2.md) |
+| QuantAMM | QuantAMM is a next generation DeFi protocol launching Blockchain Traded Funds (BTFs). | Codehawks  | [![Open report](assets/icon-page.svg)](team-reports/quantamm.md) |
