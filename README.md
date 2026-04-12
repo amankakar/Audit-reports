@@ -19,10 +19,15 @@ Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](
 |Notional Leveraged Vaults|This update creates a Leveraged Vault integration with Pendle where Notional users can take leverage to buy PT tokens. It also includes an update to existing vaults that allows incentives to be more flexibly managed.|Sherlock|[![Open Report](assets/icon-page.svg)](reports/Notional-Pendle-Integration.md)|
 |Elfi|All assets are tradable. Ultra Portfolio Mode includes multi-assets margin, position & assets risk offset.|Sherlock|[![Open Report](assets/icon-page.svg)](reports/Elfi-Protocol.md)|
 |Tokensoft Distributor Contracts Update|Adding "Per Address" functionality to existing distribution contracts on Tokensoft's platform.|Sherlock|[![Open Report](assets/icon-page.svg)](reports/TokenSoft-Dist.md)|
+|Liquid Staking|stake.link is a liquid delegated staking platform for Chainlink Staking, built by LinkPool, powered by node operators, and governed by the stake.link DAO to enable DeFi composability and broader participation in the Chainlink Network.|Codehawks|[![Open Report](assets/icon-page.svg)](reports/LiquidStaking.md)|
+|ArkProject: NFT Bridge|ArkProject is a liquidity layer for digital assets built on top of Starknet, uniting markets, empowering creators, and bridging the gap to mass adoption.|Codehawks|[![Open Report](assets/icon-page.svg)](reports/ArkNFT.md)|
+|Tadle|Tadle offers decentralized pre-market infrastructure facilitating the bridging of liquidity between primary and secondary financial markets!|Codehawks|[![Open Report](assets/icon-page.svg)](reports/Tadle.md)|
 
 
 
 
+
+---
 
 
 ### Contest Reports Team
