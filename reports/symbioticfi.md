@@ -6,7 +6,7 @@ Symbiotic is a shared security protocol enabling decentralized networks to contr
 [Ethereum][Solidity][DeFi][re-staking]
 
 
-### A re-org will disrupt the Veto Slashing process.
+### [M-01] A re-org will disrupt the Veto Slashing process.
 
 #### Summary
 The protocol allows slashing to be vetoed through a resolver, with each slash request indexed by its position in an array. However, a re-org attack could disrupt this process, leading to incorrect vetoing or causing the slash execution to revert.
@@ -106,7 +106,7 @@ Store the hash of request id with the hash of its content and verify it inside t
 
 ---
 
-### Lack of Enforcement of Epoch Duration in Vault Allows Slashing Beyond Defined Constraints
+### [L-01] Lack of Enforcement of Epoch Duration in Vault Allows Slashing Beyond Defined Constraints
 
 #### Summary
 The defined constraint for slashing is that it should only occur if the capture time is not behind by more than one epoch duration. However, this condition is not enforced inside the `vault::onslash` function.
