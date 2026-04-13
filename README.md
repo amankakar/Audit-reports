@@ -24,6 +24,7 @@ Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](
 |Tadle|Tadle offers decentralized pre-market infrastructure facilitating the bridging of liquidity between primary and secondary financial markets!|Codehawks|[![Open Report](assets/icon-page.svg)](reports/Tadle.md)|
 |Sablier|Sablier is a permissionless ERC-20 token streaming protocol that enables vesting, payroll, and airdrops by locking funds in a contract and releasing them to recipients over time based on configurable parameters like duration and payment rate.|Codehawks|[![Open Report](assets/icon-page.svg)](reports/Sablier.md)|
 |DittoETH|The system mints pegged assets (stablecoins) using an orderbook, using over-collateralized staked ETH.|Codehawks|[![Open Report](assets/icon-page.svg)](reports/DittoETH.md)|
+|symbioticfi-core|Symbiotic is a shared security protocol enabling decentralized networks to control and customize their own multi-asset restaking implementation.|Cantina|[![Open Report](assets/icon-page.svg)](reports/symbioticfi.md)|
 
 
 

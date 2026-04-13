@@ -5,7 +5,7 @@
 ArkProject offers a liquidity layer for digital assets: uniting markets, empowering creators, bridging the gap to mass adoption, built on top of Starknet.
 
 
-[Ethereum][Solidity][NFT]
+[Ethereum][Starknet][Solidity][Cario][NFT]
 
 
 ### [H-01] `_white_list_collection` and `_whiteListCollection` does not check that whitelisting is enabled could lead to DoS            
