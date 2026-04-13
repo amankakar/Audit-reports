@@ -22,6 +22,8 @@ Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](
 |Liquid Staking|stake.link is a liquid delegated staking platform for Chainlink Staking, built by LinkPool, powered by node operators, and governed by the stake.link DAO to enable DeFi composability and broader participation in the Chainlink Network.|Codehawks|[![Open Report](assets/icon-page.svg)](reports/LiquidStaking.md)|
 |ArkProject: NFT Bridge|ArkProject is a liquidity layer for digital assets built on top of Starknet, uniting markets, empowering creators, and bridging the gap to mass adoption.|Codehawks|[![Open Report](assets/icon-page.svg)](reports/ArkNFT.md)|
 |Tadle|Tadle offers decentralized pre-market infrastructure facilitating the bridging of liquidity between primary and secondary financial markets!|Codehawks|[![Open Report](assets/icon-page.svg)](reports/Tadle.md)|
+|Sablier|Sablier is a permissionless ERC-20 token streaming protocol that enables vesting, payroll, and airdrops by locking funds in a contract and releasing them to recipients over time based on configurable parameters like duration and payment rate.|Codehawks|[![Open Report](assets/icon-page.svg)](reports/Sablier.md)|
+|DittoETH|The system mints pegged assets (stablecoins) using an orderbook, using over-collateralized staked ETH.|Codehawks|[![Open Report](assets/icon-page.svg)](reports/DittoETH.md)|
 
 
 
