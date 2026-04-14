@@ -27,6 +27,7 @@ Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](
 |symbioticfi-core|Symbiotic is a shared security protocol enabling decentralized networks to control and customize their own multi-asset restaking implementation.|Cantina|[![Open Report](assets/icon-page.svg)](reports/symbioticfi.md)|
 |liquidity-book-vaults|Maker Vault Code Introduction: Maker Vaults are fully on-chain, non-custodial smart contracts that deploy and manage liquidity into DLMM pools; managed by wallets, they simplify liquidity provisioning while keeping it transparent.|Cantina|[![Open Report](assets/icon-page.svg)](reports/liquidity-book-vaults.md)|
 |Alchemix| Alchemix lets you borrow immediately against your collateral’s expected future yield; as your deposit earns interest, it repays the debt for you, so loans are self-repaying, interest-free, and non-liquidating.|Cantina|[![Open Report](assets/icon-page.svg)](reports/alchemix.md)|
+|Mezo|Mezo is a Bitcoin-native platform where users deposit BTC to borrow MUSD, a permissionless dollar-pegged stablecoin, and repay anytime with interest to reclaim their collateral.|Cantina|[![Open Report](assets/icon-page.svg)](reports/mezo.md)|
 
 
 
