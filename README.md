@@ -28,6 +28,8 @@ Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](
 |liquidity-book-vaults|Maker Vault Code Introduction: Maker Vaults are fully on-chain, non-custodial smart contracts that deploy and manage liquidity into DLMM pools; managed by wallets, they simplify liquidity provisioning while keeping it transparent.|Cantina|[![Open Report](assets/icon-page.svg)](reports/liquidity-book-vaults.md)|
 |Alchemix| Alchemix lets you borrow immediately against your collateral’s expected future yield; as your deposit earns interest, it repays the debt for you, so loans are self-repaying, interest-free, and non-liquidating.|Cantina|[![Open Report](assets/icon-page.svg)](reports/alchemix.md)|
 |Mezo|Mezo is a Bitcoin-native platform where users deposit BTC to borrow MUSD, a permissionless dollar-pegged stablecoin, and repay anytime with interest to reclaim their collateral.|Cantina|[![Open Report](assets/icon-page.svg)](reports/mezo.md)|
+|Vechain|StarGate is VeChainThor's next-generation NFT-based staking protocol that enables VET holders to secure the network and earn rewards through staking and delegation as part of the Hayabusa upgrade.|Immunefi|[![Open Report](assets/icon-page.svg)](reports/vechain.md)|
+|AlchemixV3|Alchemix v3 is a unified DeFi platform that combines saving, earning, borrowing, and fixed-yield opportunities in a more flexible and efficient design|Immunefi|[![Open Report](assets/icon-page.svg)](reports/alchemixV3.md)|
 
 
 
