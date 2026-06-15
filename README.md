@@ -30,6 +30,7 @@ Interested in working together? Reach me at [![X (Twitter)](assets/icon-x.svg)](
 |Mezo|Mezo is a Bitcoin-native platform where users deposit BTC to borrow MUSD, a permissionless dollar-pegged stablecoin, and repay anytime with interest to reclaim their collateral.|Cantina|[![Open Report](assets/icon-page.svg)](reports/mezo.md)|
 |Vechain|StarGate is VeChainThor's next-generation NFT-based staking protocol that enables VET holders to secure the network and earn rewards through staking and delegation as part of the Hayabusa upgrade.|Immunefi|[![Open Report](assets/icon-page.svg)](reports/vechain.md)|
 |AlchemixV3|Alchemix v3 is a unified DeFi platform that combines saving, earning, borrowing, and fixed-yield opportunities in a more flexible and efficient design|Immunefi|[![Open Report](assets/icon-page.svg)](reports/alchemixV3.md)|
+|flare|Flare is a data-focused Layer-1 EVM blockchain that enables trustless bridging of assets like BTC, DOGE, and XRP through FAssets, with the Core Vault enhancing liquidity, scalability, and capital efficiency.|Immunefi|[![Open Report](assets/icon-page.svg)](reports/flare.md)|
 
 
 
